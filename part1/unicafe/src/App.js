@@ -8,12 +8,19 @@ const App = () => {
   const [bad, setBad] = useState(0)
   
   const Statistics = ({goodReviews, neutralReviews, badReviews}) => {
+    const all = goodReviews + neutralReviews + badReviews
+    const average = ((goodReviews - badReviews) / all)
+    const positive = (goodReviews / all)
     return(
       <div>
         <h2>statistics</h2>
         <p>good {goodReviews}</p>
         <p>neutral {neutralReviews}</p>
         <p>bad {badReviews}</p>
+        <br />
+        <p>all {all}</p>
+        <p>average {average}</p>
+        <p>positive {positive}</p>
       </div>
     )
   }
