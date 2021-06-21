@@ -1,8 +1,7 @@
 
 const CountryInfo = ({country, fullList}) => {
 
-    const CountryObject = fullList.filter(object => object.name === country )
-
+    const CountryObject = fullList.filter(object => object.name.toLowerCase() === country.toLowerCase())
     return(
         <div>
             <h1>{country}</h1> 
