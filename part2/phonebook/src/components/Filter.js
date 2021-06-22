@@ -9,10 +9,10 @@ const Filter = ({ persons, existingNames, setFilteredArray }) => {
         const filteredObjects = persons.filter(person => filteredNames.includes(person.name.toLowerCase()))   
         setFilteredArray(filteredObjects)
         if (event.target.value === "") {    ///need to empty the filteredArray if input is empty, otherwise it retains previous values
-          setFilteredArray([])
+        setFilteredArray([])
         }
-    
     }
+
 
 
 
@@ -22,5 +22,6 @@ const Filter = ({ persons, existingNames, setFilteredArray }) => {
         </div>
     )
 }
+    
 
 export default Filter

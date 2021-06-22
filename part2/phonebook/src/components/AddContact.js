@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import contactList from '../services/contacts'
 
 const AddContact = ({ persons,setPersons, existingNames }) => {
     const [ newName, setNewName ] = useState('')
@@ -18,11 +19,12 @@ const AddContact = ({ persons,setPersons, existingNames }) => {
       if (existingNames.includes(newName.toLowerCase())) {            
             alert(`Name '${newName}' already exists!`)
         } else {
-        const newPerson = {
-            name: newName,
-            number: newNumber
-        }
-        setPersons(persons.concat(newPerson))
+          const newPerson = {
+              name: newName,
+              number: newNumber
+          }
+          contactList.addPerson(newPerson)
+          setPersons(persons.concat(newPerson))
         }
     }
 
