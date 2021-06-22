@@ -10,13 +10,11 @@ const App = () => {
 
   const existingNames = persons.map(person => person.name.toLowerCase())  
 
-
   useEffect( () => {
     contacts.getAll()
       .then(response => {
         setPersons(response)
       })
-
   },[])
 
   return (

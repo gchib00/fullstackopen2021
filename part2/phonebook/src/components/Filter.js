@@ -1,24 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Filter = ({ persons, existingNames, setFilteredArray }) => {
     const [ filter, setFilter ] = useState('')
-
-    const filterList = (event) => {
+    
+    const filteredNames = existingNames.filter(name => name.includes(filter.toLowerCase())) 
+    const filteredObjects = persons.filter(person => filteredNames.includes(person.name.toLowerCase()))  
+    
+    const handleChange = (event) => {
         setFilter(event.target.value) 
-        const filteredNames = existingNames.filter(name => name.includes(filter.toLowerCase()))  
-        const filteredObjects = persons.filter(person => filteredNames.includes(person.name.toLowerCase()))   
+    } 
+
+    useEffect(() => {
         setFilteredArray(filteredObjects)
-        if (event.target.value === "") {    ///need to empty the filteredArray if input is empty, otherwise it retains previous values
-        setFilteredArray([])
+        if (filter === "") {    ///need to empty the filteredArray if input is empty, otherwise it retains previous values
+            setFilteredArray([])
         }
-    }
-
-
+    }, [filter, setFilteredArray])
 
 
     return(
         <div>
-            Filter contact list: <input value={filter} onChange={filterList} /> 
+            Filter contact list: <input value={filter} onChange={handleChange} /> 
         </div>
     )
 }
