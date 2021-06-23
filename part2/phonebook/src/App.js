@@ -24,7 +24,7 @@ const App = () => {
       <h2>Add New</h2>
       <AddContact persons={persons} setPersons={setPersons} existingNames={existingNames} />
       <h2>Numbers</h2>
-      <ContactList persons={persons} filteredArray={filteredArray} />
+      <ContactList persons={persons} setPersons={setPersons} filteredArray={filteredArray} setFilteredArray={setFilteredArray} />
     </div>
   )
 }
