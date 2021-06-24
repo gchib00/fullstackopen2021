@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const url = 'http://localhost:3001/persons'
 
+
 const getAll = () => {
     const request = axios.get(url)
     return request.then(response => response.data)
@@ -14,6 +15,10 @@ const removePerson = (id) => {
 }
 const updateNumber = (changedObject) => {
     return axios.put(url+'/'+changedObject.id, changedObject).then(getAll)
+    .catch (error => {
+        console.log(error)
+        return getAll()
+    })
 }
 
 const exportedObject = { addPerson, getAll, removePerson, updateNumber }

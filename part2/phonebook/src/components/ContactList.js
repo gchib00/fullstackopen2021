@@ -7,7 +7,6 @@ const ContactList = ({ filteredArray, persons, setPersons, setFilteredArray }) =
         const name=person.name
         if (window.confirm(`Delete ${name}?`)) {
             contactList.removePerson(id) //removes contact from db.json
-
             //update arrays:
             setPersons(persons.filter(person => person.id !== id)) 
             if (filteredArray.map(persons => persons.id === id)) {

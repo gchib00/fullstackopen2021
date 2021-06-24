@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import Notification from './Notification'
 import contactList from '../services/contacts'
 
 const AddContact = ({ persons, setPersons, existingNames }) => {
     const [ newName, setNewName ] = useState('')
     const [ newNumber, setNewNumber ] = useState('')
-
+    const [ notification_added, setNotification_added ] = useState(false)
+    const [ notification_numChanged, setNotification_numChanged ] = useState(false)
+    let [ notification_userDeleted, setNotification_userDeleted ] = useState('')
 
     const handleSubmit = (event) => {
       event.preventDefault()
@@ -26,9 +29,25 @@ const AddContact = ({ persons, setPersons, existingNames }) => {
             //Update the object
             object.number = newNumber
             //Pass the updated object to db in order to update the json file
-            contactList.updateNumber(object).then(response => {
-              setPersons(response)
+            contactList.updateNumber(object)
+              .then(response => {
+                if (persons.length > response.length){ 
+                  //if response array is smaller, it means that 'updateNumber()' has caught an error and one item got excluded from persons array
+                  setNotification_userDeleted(true)
+                }
+                setPersons(response) //finally, update the persons array
             })
+            console.log(notification_userDeleted)
+            if (notification_userDeleted === false){
+              setNotification_numChanged(true)
+              setTimeout(() => {
+                setNotification_numChanged(false)
+              }, 4000)
+            } else {
+              setTimeout(() => {
+                setNotification_userDeleted(false)
+              }, 5000)
+            }
           }
         }
       } else {
@@ -39,19 +58,40 @@ const AddContact = ({ persons, setPersons, existingNames }) => {
         contactList.addPerson(newPerson).then(response => {
           setPersons(response)
         })
+        setNotification_added(true)
+        setTimeout( () => {
+          setNotification_added(false)
+        }, 4000)
       }
     }
 
-
-
     return(
-      <form onSubmit={handleSubmit}>
-        <div>name: <input value={newName} onChange={handleNameChange} /></div>
-        <div>number: <input value={newNumber} onChange={handleNumberChange} /></div>
+      <div>
+        <form onSubmit={handleSubmit}>
+          <div>name: <input value={newName} onChange={handleNameChange} /></div>
+          <div>number: <input value={newNumber} onChange={handleNumberChange} /></div>
+          <div>
+            <button type="submit" onClick={addName}>add</button>
+          </div>
+        </form>
         <div>
-          <button type="submit" onClick={addName}>add</button>
+          {notification_added === true ? 
+            <Notification content={`${newName} has been added`} />
+          :
+            null
+          }
+          {notification_numChanged === true ? 
+            <Notification content={`Number has been changed to ${newNumber}`} />
+          :
+            null
+          }
+          {notification_userDeleted === true ?
+            <Notification content={'Unable to update, contact no longer exists'}/>
+          :
+            null
+          }
         </div>
-      </form>
+      </div>
     )
 
 }

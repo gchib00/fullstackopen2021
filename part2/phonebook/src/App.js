@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react'
 import AddContact from './components/AddContact'
 import Filter from './components/Filter'
 import ContactList from './components/ContactList'
+
 import contacts from './services/contacts'
+
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
