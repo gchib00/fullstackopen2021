@@ -28,7 +28,7 @@ const ContactList = ({ filteredArray, persons, setPersons, setFilteredArray }) =
                 persons.map(person => 
                     <div key={person.name} style={{display: 'flex', justifyContent: 'flex-start'}}>
                         <li>{person.name} - {person.number}</li>
-                        <button onClick={() => deleteContact(person)}>remove</button>
+                        <button onClick={() => deleteContact(person)}>delete</button>
                     </div>)
             }
       </ul>
