@@ -29,14 +29,15 @@ const AddContact = ({ persons, setPersons, existingNames }) => {
             //Update the object
             object.number = newNumber
             //Pass the updated object to db in order to update the json file
-            contactList.updateNumber(object)
+            contactList.updateNumber(object) 
               .then(response => {
                 if (persons.length > response.length){ 
                   //if response array is smaller, it means that 'updateNumber()' has caught an error and one item got excluded from persons array
                   setNotification_userDeleted(true)
                 }
                 setPersons(response) //finally, update the persons array
-            })
+              })
+              .catch(error => error) 
             console.log(notification_userDeleted)
             if (notification_userDeleted === false){
               setNotification_numChanged(true)

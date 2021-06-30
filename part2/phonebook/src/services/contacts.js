@@ -10,14 +10,17 @@ const addPerson = (person) => {
       return axios.post(url, person).then(getAll)
 }
 const removePerson = (id) => {
-    return axios.delete(url+"/"+id).then(getAll)
+    return axios.delete(url+id).then(getAll)
 }
 const updateNumber = (changedObject) => {
-    return axios.put(url+'/'+changedObject.id, changedObject).then(getAll)
-    .catch (error => {
-        console.log(error)
-        return getAll()
-    })
+    return axios
+        .put(url+changedObject.id, {name: changedObject.name, number: changedObject.number})
+        .then(getAll)
+        .catch (error => {
+            console.log('It got stuck at contacts.js!')
+            console.log('IT FAILED AT AXIOS: ',error) 
+            // return getAll()
+        })
 }
 
 const exportedObject = { addPerson, getAll, removePerson, updateNumber }
