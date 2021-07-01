@@ -23,6 +23,16 @@ const Notification = ({content}) => {
             alignItems: 'center',
         }
     }
+    if (content.includes('Person validation failed')){
+        style_container = {
+            width: '700px',
+            height: '80px',
+            backgroundColor: 'red',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+        }
+    }
 
     return(
         <div style={style_container}>

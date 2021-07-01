@@ -8,6 +8,7 @@ const AddContact = ({ persons, setPersons, existingNames }) => {
     const [ notification_added, setNotification_added ] = useState(false)
     const [ notification_numChanged, setNotification_numChanged ] = useState(false)
     let [ notification_userDeleted, setNotification_userDeleted ] = useState('')
+    let [ notification_inputIssue, setNotification_inputIssue] = useState('')
 
     const handleSubmit = (event) => {
       event.preventDefault()
@@ -35,9 +36,9 @@ const AddContact = ({ persons, setPersons, existingNames }) => {
                   //if response array is smaller, it means that 'updateNumber()' has caught an error and one item got excluded from persons array
                   setNotification_userDeleted(true)
                 }
-                setPersons(response) //finally, update the persons array
+                setPersons(response) //update the persons array
               })
-              .catch(error => error) 
+              .catch(error => console.log(error.response.data)) 
             console.log(notification_userDeleted)
             if (notification_userDeleted === false){
               setNotification_numChanged(true)
@@ -56,15 +57,24 @@ const AddContact = ({ persons, setPersons, existingNames }) => {
             name: newName,
             number: newNumber
         }
-        contactList.addPerson(newPerson).then(response => {
-          setPersons(response)
+        contactList.addPerson(newPerson)
+          .then(response => {
+            setPersons(response)
+
+            setNotification_added(true)
+            setTimeout( () => {
+              setNotification_added(false)
+            }, 4000)
         })
-        setNotification_added(true)
-        setTimeout( () => {
-          setNotification_added(false)
-        }, 4000)
-      }
+        .catch(error => {
+          setNotification_inputIssue(error.response.data.error)
+          setTimeout( () => {
+            setNotification_inputIssue('')
+          }, 10000)
+        })
     }
+  }
+
 
     return(
       <div>
@@ -87,7 +97,12 @@ const AddContact = ({ persons, setPersons, existingNames }) => {
             null
           }
           {notification_userDeleted === true ?
-            <Notification content={'Unable to update, contact no longer exists'}/>
+            <Notification content={'Unable to update, contact no longer exists'} />
+          :
+            null
+          }
+          {notification_inputIssue !== '' ?
+            <Notification content={notification_inputIssue} />
           :
             null
           }

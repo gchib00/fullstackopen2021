@@ -17,9 +17,7 @@ const updateNumber = (changedObject) => {
         .put(url+changedObject.id, {name: changedObject.name, number: changedObject.number})
         .then(getAll)
         .catch (error => {
-            console.log('It got stuck at contacts.js!')
-            console.log('IT FAILED AT AXIOS: ',error) 
-            // return getAll()
+            console.log('failed at updateNumber: ',error) 
         })
 }
 
