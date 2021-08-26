@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Switch, Route, Link, useParams } from 'react-router-dom'
+let timeoutID = 0
 
 const Menu = () => {
   const padding = {
@@ -17,11 +18,15 @@ const Menu = () => {
 const Anecdote = ({ anecdotes }) => {
   const id = useParams().id
   const selectedAnecdote = anecdotes.find(anecdote => anecdote.id === id)
+  const infoStyle = {display: 'inline-flex', alignItems: 'center'}
   return(
     <div>
-      <h1>{selectedAnecdote.content}</h1>
+      <h1>{selectedAnecdote.content} by {selectedAnecdote.author}</h1>
       <p>number of votes: {selectedAnecdote.votes}</p>
-      <p>Author: {selectedAnecdote.author}</p>
+      <div style={infoStyle}>
+        <p style={{marginRight: 5}}>for more info visit:</p>
+        <a href={selectedAnecdote.info}>{selectedAnecdote.info}</a>
+      </div>
     </div>
   )
 }
@@ -67,8 +72,6 @@ const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
-
-
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
@@ -77,8 +80,8 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    setContent(''); setAuthor(''); setInfo('')
   }
-
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -99,8 +102,27 @@ const CreateNew = (props) => {
       </form>
     </div>
   )
-
 }
+const Notification = ({ notification }) => {
+  let boxStyle = {
+    width: '600px',
+    height: '80px',
+    border: '3px black solid',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+  if(notification === '') {
+    boxStyle = {visibility: 'hidden'}
+  }
+
+  return(
+    <div style={boxStyle}>
+      {notification}
+    </div>
+  )
+}
+
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -123,21 +145,25 @@ const App = () => {
   const [notification, setNotification] = useState('')
 
   const addNew = (anecdote) => {
+    clearTimeout(timeoutID)
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`A new anecdote has been added: ${anecdote.content}`)
+    timeoutID = setTimeout(() => {
+      setNotification('')
+    }, 10000)
   }
 
   const anecdoteById = (id) =>
     anecdotes.find(a => a.id === id)
 
+  // eslint-disable-next-line no-unused-vars
   const vote = (id) => {
     const anecdote = anecdoteById(id)
-
     const voted = {
       ...anecdote,
       votes: anecdote.votes + 1
     }
-
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
@@ -145,6 +171,7 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      <Notification notification={notification} />
       <Switch>
         <Route path="/anecdote/:id">
           <Anecdote anecdotes={anecdotes} />
