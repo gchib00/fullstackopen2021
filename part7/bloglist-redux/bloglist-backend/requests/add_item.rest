@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/blogs
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJyaXR0bnkxNCIsImlkIjoiNjBmZWFlMTE4ODA0MDE0MzE5ZjkxOTVhIiwiaWF0IjoxNjI3MzA1NzAzfQ.PEKayH65jg-cPRYH3E-i6fv5PTTOs_W24euq-wzkpeY
+
+{
+  "title": "Kirkland spiral",
+  "author": "Aston Wright",
+  "url": "https://astonwright.ca/jj3/",
+  "likes": 4
+}
