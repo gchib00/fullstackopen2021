@@ -2,8 +2,12 @@ import { useState } from 'react'
 import blogService from '../services/blogs' 
 // eslint-disable-next-line no-unused-vars
 import Notification from './Notification'
+import { useDispatch } from 'react-redux'
+import { initializeBlogs } from '../reducers/blogsReducer'
 
-const AddBlogForm = (props) => {
+
+const AddBlogForm = () => {
+  const dispatch = useDispatch()
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -17,7 +21,8 @@ const AddBlogForm = (props) => {
       .then(response => setNotificationText(`'${response.title}' has been added successfully`))
       .then(      
         blogService.getAll().then(blogs =>
-          props.setBlogs(blogs)
+          // props.setBlogs(blogs)
+          dispatch(initializeBlogs(blogs))
         )
       )
       .catch(error => {

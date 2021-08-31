@@ -5,10 +5,12 @@ import Blog from './components/Blog'
 import Login from './components/Login'
 import blogService from './services/blogs'
 import Togglable from './components/Togglable'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { initializeBlogs } from './reducers/blogsReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const dispatch = useDispatch()
+  const blogs = useSelector(state => state.blogs)
   const [user, setUser] = useState('')
 
   const logout = () => {
@@ -24,7 +26,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs(blogs)
+      dispatch(initializeBlogs(blogs))
     )  
   }, [])
 
@@ -40,11 +42,11 @@ const App = () => {
       <h2>blogs</h2>
       <h4>{user.name} is logged in. <button onClick={logout}>logout</button></h4>
       <Togglable btnLabel='Add Blog' blogs={blogs}>
-        <AddBlogForm user={user} setBlogs={setBlogs}/>
+        <AddBlogForm />
       </Togglable>
       <br />
       {blogs.map(blog =>
-        <Blog key={blog.title} blog={blog} setBlogs={setBlogs} />
+        <Blog key={blog.title} blog={blog}/>
       )}
     </div>
   )
