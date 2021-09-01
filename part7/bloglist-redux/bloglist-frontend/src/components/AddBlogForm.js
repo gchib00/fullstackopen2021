@@ -1,33 +1,31 @@
 import { useState } from 'react'
 import blogService from '../services/blogs' 
 // eslint-disable-next-line no-unused-vars
-import Notification from './Notification'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from '../reducers/blogsReducer'
+import { displayNotification, removeNotification } from '../reducers/notificationsReducer'
 
 
 const AddBlogForm = () => {
   const dispatch = useDispatch()
+  const notificationText = useSelector(state => state.notifications)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [showNotification, setShowNotification] = useState(false)
-  const [notificationText, setNotificationText] = useState('')
 
   const addBlog = (event) => {
-
     event.preventDefault()
     blogService.addBlog({title, author, url})
-      .then(response => setNotificationText(`'${response.title}' has been added successfully`))
+      .then(response => dispatch(displayNotification(`'${response.title}' has been added successfully`)))
       .then(      
         blogService.getAll().then(blogs =>
-          // props.setBlogs(blogs)
           dispatch(initializeBlogs(blogs))
         )
       )
       .catch(error => {
         if(error.toString().includes('401')) {
-          setNotificationText('Title is invalid')
+          dispatch(displayNotification('Title is invalid'))
           setShowNotification(true)
         }
       })
@@ -38,22 +36,24 @@ const AddBlogForm = () => {
     
   }
 
+  // eslint-disable-next-line no-unused-vars
   const giveText = () => {
     let text = ''
     if (showNotification){
+      console.log('notificationText = ', notificationText)
       text = notificationText
       setTimeout(()=> {
         setShowNotification(false)
-        setNotificationText('')
+        dispatch(removeNotification())
       }, 3000)
       return text
     } else {
       return ''
     }
   }
+  giveText()
   return(
     <>
-      <Notification text={giveText()}/>
       <form onSubmit={addBlog}>
         <div>
         title:

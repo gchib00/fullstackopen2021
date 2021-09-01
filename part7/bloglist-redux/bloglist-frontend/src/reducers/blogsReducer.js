@@ -1,5 +1,5 @@
 
-const blogReducer = (state = [], action) => {
+const blogsReducer = (state = [], action) => {
   switch(action.type){
   case 'INITIALIZE_BLOGS': {
     const newState = action.blogs
@@ -20,4 +20,4 @@ export const initializeBlogs = (blogs) => {
   }
 }
 
-export default blogReducer
+export default blogsReducer
