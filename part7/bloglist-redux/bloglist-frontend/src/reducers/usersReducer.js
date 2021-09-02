@@ -1,6 +1,6 @@
 const usersReducer = (state = [], action) => {
   switch(action.type){
-  case('LOGGED_USER'):{
+  case('INITIALIZE_USERS'):{
     const newState = action.users
     return newState
   }
@@ -11,7 +11,7 @@ const usersReducer = (state = [], action) => {
 }
 export const initializeUsers = (users) => {
   return async dispatch => {
-    dispatch({type: 'LOGGED_USER', users: users})
+    dispatch({type: 'INITIALIZE_USERS', users: users})
   }
 }
 export default usersReducer

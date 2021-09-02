@@ -2,8 +2,11 @@ import { useState, useEffect } from 'react'
 import loginService from '../services/login' 
 // eslint-disable-next-line no-unused-vars
 import Notification from './Notification'
+import { setUser } from '../reducers/userReducer'
+import { useDispatch } from 'react-redux'
 
-const Login = (props) => {
+const Login = () => {
+  const dispatch = useDispatch()
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   // eslint-disable-next-line no-unused-vars
@@ -18,7 +21,7 @@ const Login = (props) => {
       setUsername('')
       setPassword('')
       window.localStorage.setItem('user', JSON.stringify(user))
-      props.setUser(user)
+      dispatch(setUser(user))
     } catch (exception) {
       setErrorMessage('Wrong credentials')
     }

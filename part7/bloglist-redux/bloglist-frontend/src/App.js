@@ -11,22 +11,25 @@ import Togglable from './components/Togglable'
 import { useSelector, useDispatch } from 'react-redux'
 import { initializeBlogs } from './reducers/blogsReducer'
 import { initializeUsers } from './reducers/usersReducer'
+import { setUser } from './reducers/userReducer'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 const App = () => {
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
   const users = useSelector(state => state.users)
-  const [user, setUser] = useState('')
-  console.log('users:', users)
+  const user = useSelector(state => state.loggedUser)
+  // const [user, setUser] = useState('')
+  
+  console.log('logged user:', user)
 
   const logout = () => {
     window.localStorage.setItem('user', null)
-    setUser(null)
+    dispatch(setUser(null))
   }
   useEffect(() => {
     const loggedUser = JSON.parse(localStorage.getItem('user'))
-    setUser(loggedUser)
+    dispatch(setUser(loggedUser))
     try {blogService.setToken(loggedUser.token)}
     catch{error=>console.error(error)}
   }, [])
@@ -42,11 +45,7 @@ const App = () => {
     )
   }, [])
   if (user===null || user===undefined){
-    return(
-      <Login 
-        user={user} 
-        setUser={setUser} 
-      />)
+    return <Login />
   }
   return (
     <Router>
