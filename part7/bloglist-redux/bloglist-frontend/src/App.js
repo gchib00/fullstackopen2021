@@ -5,7 +5,8 @@ import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Login from './components/Login'
 import Users from './components/Users'
-import UserHistory from './components/UserHistory'
+import UserView from './components/UserView'
+import BlogView from './components/BlogView'
 import blogService from './services/blogs'
 import usersService from './services/users'
 import Togglable from './components/Togglable'
@@ -55,8 +56,11 @@ const App = () => {
         <h4>{user.name} is logged in. <button onClick={logout}>logout</button></h4>
         <Notification />
         <Switch>
+          <Route path='/blogs/:id'>
+            <BlogView />
+          </Route>
           <Route path='/users/:id'>
-            <UserHistory />
+            <UserView />
           </Route>
           <Route path='/users'>
             <Users />

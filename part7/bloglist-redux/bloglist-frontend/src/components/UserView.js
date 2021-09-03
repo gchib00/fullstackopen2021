@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 
-const UserHistory = () => {
+const UserView = () => {
   const id = useParams().id
   const blogs = useSelector(state => state.blogs)
   const users = useSelector(state => state.users)
@@ -25,4 +25,4 @@ const UserHistory = () => {
   )
 
 }
-export default UserHistory
+export default UserView
