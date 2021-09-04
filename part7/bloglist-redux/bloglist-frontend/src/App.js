@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react'
+import Navbar from './components/Navbar'
 import AddBlogForm from './components/AddBlogForm'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
@@ -21,10 +22,7 @@ const App = () => {
   const blogs = useSelector(state => state.blogs)
   const users = useSelector(state => state.users)
   const user = useSelector(state => state.loggedUser)
-  // const [user, setUser] = useState('')
   
-  console.log('logged user:', user)
-
   const logout = () => {
     window.localStorage.setItem('user', null)
     dispatch(setUser(null))
@@ -41,7 +39,6 @@ const App = () => {
       dispatch(initializeBlogs(blogs))
     )  
     usersService.getAll().then(users => {
-      console.log('users returned from usersService', users)
       return dispatch(initializeUsers(users))
     }
     )
@@ -52,8 +49,9 @@ const App = () => {
   return (
     <Router>
       <div>
-        <h2>blogs</h2>
-        <h4>{user.name} is logged in. <button onClick={logout}>logout</button></h4>
+        <Navbar loggedUser={user} logout={logout} />
+        <h2>blog app</h2>
+        <br />
         <Notification />
         <Switch>
           <Route path='/blogs/:id'>

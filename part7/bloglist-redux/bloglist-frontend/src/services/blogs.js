@@ -13,7 +13,8 @@ const updateBlog = async body => {
     likes: body.likes+1,
     author: body.author,
     title: body.title,
-    url: body.url
+    url: body.url,
+    comments: [...body.comments]
   }
   const request = await axios.put(baseUrl+`/${body.user.id}`, updatedBlog)
   return request
@@ -43,5 +44,17 @@ const addBlog = async body => {
   const response = await axios.post(baseUrl, newBlog, config)
   return response.data
 }
+const addComment = async (body, comment) => {
+  const updatedBlog = {
+    user: body.user,
+    likes: body.likes,
+    author: body.author,
+    title: body.title,
+    url: body.url,
+    comments: [...body.comments, comment]
+  }
+  const request = await axios.put(baseUrl+`/${body.title.replace(/\s/g, '')}`, updatedBlog)
+  return request
+}
 
-export default { getAll, addBlog, setToken, updateBlog, deleteBlog }
+export default { getAll, addBlog, setToken, updateBlog, deleteBlog, addComment }

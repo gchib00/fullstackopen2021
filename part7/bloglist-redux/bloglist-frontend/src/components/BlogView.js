@@ -1,4 +1,6 @@
 import blogServices from '../services/blogs'
+// eslint-disable-next-line no-unused-vars
+import CommentForm from './CommentForm'
 import { initializeBlogs } from '../reducers/blogsReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
@@ -31,17 +33,21 @@ const BlogView = () => {
     return <h3>Blog not found</h3>
   }
   return(
-    <div>
-      <h1>{blog.title} by {blog.author}</h1>
-      <a href={blog.url}>{blog.url}</a>
-      <p>{blog.likes} likes</p>
+    <>
       <div>
-        <p>added by {blog.user.name}</p>
-        <button onClick={()=>incrementLikes(blog)}>Like</button>
+        <h1>{blog.title} by {blog.author}</h1>
+        <a href={blog.url}>{blog.url}</a>
+        <p>{blog.likes} likes</p>
+        <div>
+          <p>added by {blog.user.name}</p>
+          <button onClick={()=>incrementLikes(blog)}>Like</button>
+        </div>
+        <br/>
+        <button onClick={()=>deleteBlog(blog)}>Delete</button>
       </div>
       <br/>
-      <button onClick={()=>deleteBlog(blog)}>Delete</button>
-    </div>
+      <CommentForm selectedBlog={blog} />
+    </>
   )
 }
 
