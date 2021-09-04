@@ -16,6 +16,7 @@ import { initializeBlogs } from './reducers/blogsReducer'
 import { initializeUsers } from './reducers/usersReducer'
 import { setUser } from './reducers/userReducer'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import Container from '@material-ui/core/Container'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -48,7 +49,7 @@ const App = () => {
   }
   return (
     <Router>
-      <div>
+      <Container>
         <Navbar loggedUser={user} logout={logout} />
         <h2>blog app</h2>
         <br />
@@ -73,7 +74,7 @@ const App = () => {
             )}
           </Route>
         </Switch>
-      </div>
+      </Container>
     </Router>
   )
 }

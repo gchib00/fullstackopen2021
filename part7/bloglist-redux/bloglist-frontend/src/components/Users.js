@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { useSelector } from 'react-redux'
-// eslint-disable-next-line no-unused-vars
 import { Link } from 'react-router-dom'
+import Table from '@material-ui/core/Table'
 
 const Users = () => {
   const blogs = useSelector(state => state.blogs)
@@ -25,7 +26,7 @@ const Users = () => {
   return(
     <div>
       <h3>Registered users:</h3>
-      <table style={tableStyle}>      
+      <Table style={tableStyle}>      
         <thead>
           <tr>
             <th style={{border: '1px solid black'}}>User</th>
@@ -40,7 +41,7 @@ const Users = () => {
             </tr>)
           )}
         </tbody>
-      </table>
+      </Table>
     </div>
   )
 }
