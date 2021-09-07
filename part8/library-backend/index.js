@@ -94,11 +94,16 @@ const typeDefs = gql`
     author: String!
     published: Int!
     genres: [String]!
-  }
+  },
+  type Author {
+    name: String!
+    bookCount: Int!
+  },
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks: [Book!]!
+    allBooks(author: String, genre: String): [Book!]!
+    allAuthors: [Author!]!
   }
 `
 
@@ -106,7 +111,29 @@ const resolvers = {
   Query: {
     bookCount: () => books.length,
     authorCount: () => authors.length,
-    allBooks: () => books
+    allBooks: (root, args) => {
+      if (JSON.stringify(args) === '{}'){return books} //args not provided (deafult)
+      let newArr = []
+      if (args.author !== undefined && args.genre !== undefined) {
+        newArr = books.filter(book => book.author === args.author)
+        newArr = newArr.filter(book => book.genres.includes(args.genre))
+        return newArr
+      }
+      if (args.author !== undefined) {
+        newArr = books.filter(book => book.author === args.author)
+        return newArr
+      }
+      newArr = books.filter(book => book.genres.includes(args.genre))
+      return newArr
+    },
+    allAuthors: () => authors
+  },
+  Author: {
+    bookCount: (root) => {
+      let newArr = []
+      newArr = books.filter(book => book.author === root.name)
+      return newArr.length
+    }
   }
 }
 
