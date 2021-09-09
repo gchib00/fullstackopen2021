@@ -99,6 +99,8 @@ const typeDefs = gql`
   type Author {
     name: String!
     bookCount: Int!
+    id: String!
+    born: Int
   },
   type Mutation {
     addBook(
@@ -107,7 +109,11 @@ const typeDefs = gql`
       published: Int!
       genres: [String]!
     ): Book
-  }
+    editAuthor(
+      name: String!
+      setBornTo: Int
+    ): Author
+  },
   type Query {
     bookCount: Int!
     authorCount: Int!
@@ -151,6 +157,15 @@ const resolvers = {
         authors.push(newAuthor)
       }
       return newBook
+    },
+    editAuthor: (root, args) => {
+      let updatedAuthor = authors.find(author => author.name === args.name)
+      if (updatedAuthor == undefined){
+        return null
+      }
+      updatedAuthor = {...updatedAuthor, born: args.setBornTo}
+      authors = authors.map(author => author.name == updatedAuthor.name ? updatedAuthor : author)
+      return updatedAuthor
     }
   },
   Author: {
