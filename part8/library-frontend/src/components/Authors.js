@@ -1,21 +1,25 @@
 import React, { useState } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
 import { ALL_AUTHORS, UPDATE_BIRTHDATE } from '../queries'
+import Select from 'react-select'
 
 const Authors = (props) => {
-  const [authorName, setAuthorName] = useState('')
+  const [selectedAuthor, setSelectedAuthor] = useState({})
   const [newDate, setNewDate] = useState('')
   const [updateBirthdate] = useMutation(UPDATE_BIRTHDATE, {refetchQueries: [{ query: ALL_AUTHORS }]})
 
   const response = useQuery(ALL_AUTHORS)
   if (response.loading){return null}
   const authors = response.data.allAuthors
+  const options = authors.map(author => { 
+    return {value: author.name, label: author.name}
+  })
 
   const updateAuthorDate = (event) => {
     event.preventDefault()
-    const searchedAuthor = authors.find(author => author.name === authorName)
+    const searchedAuthor = authors.find(author => author.name === selectedAuthor.value)
     if (searchedAuthor){
-      updateBirthdate({variables: {name: authorName, setBornTo: Number(newDate)}})
+      updateBirthdate({variables: {name: selectedAuthor.value, setBornTo: Number(newDate)}})
     } else {
       alert('Author not found!')
     }
@@ -52,9 +56,10 @@ const Authors = (props) => {
       <br />
       <div>
         <form onSubmit={updateAuthorDate}>       
-          <div>
+          <div style={{maxWidth: 300}}>
             Author:
-            <input type='text' value={authorName} onChange={(e) => setAuthorName(e.target.value)}/>
+            {/* <input type='text' value={authorName} onChange={(e) => setAuthorName(e.target.value)}/> */}
+            <Select defaultValue={selectedAuthor} options={options} onChange={setSelectedAuthor}/>
           </div>
           <div>
             Change Birthdate:
