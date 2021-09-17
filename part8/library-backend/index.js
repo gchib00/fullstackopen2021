@@ -2,7 +2,7 @@ const { ApolloServer, UserInputError, gql } = require('apollo-server')
 const { v4: uuidv4 } = require('uuid');
 const mongoose = require('mongoose')
 const Book = require('./models/book')
-const Author = require('./models/author')
+const Author = require('./models/author');
 
 const MONGODB_URI = 'mongodb+srv://fullstack-library-app:000@cluster0.j7uur.mongodb.net/library-app?retryWrites=true&w=majority'
 mongoose.connect(MONGODB_URI)
@@ -101,18 +101,21 @@ mongoose.connect(MONGODB_URI)
 //     genres: ['classic', 'revolution']
 //   },
 // ]
+// const addAuthorsToDB = () => {
+//   authors.forEach(author => {
+//     const newAuthor = new Author({...author})
+//     return newAuthor.save()
+//   })
+// }
+// addAuthorsToDB()
 
-// const addBooksToDB = () => {
-//   const createAuthorObj = (authorName) => {
-//     const authorObj = authors.find(author => author.name == authorName)
-//     console.log('authorObj=', authorObj)
-//     const authorForDB = new Author({...authorObj})
-//     console.log('authorForDB=', authorForDB)
-//     authorForDB.save()
-//     return authorForDB
+// const addBooksToDB = async () => {
+//   const assignAuthor = async (authorName) => {
+//     const author = await Author.findOne({name: authorName})
+//     return author
 //   }
-//   books.forEach(book => {
-//     const newBook = new Book({...book, author: createAuthorObj(book.author)})
+//   books.forEach(async (book) => {
+//     const newBook = new Book({...book, author: await assignAuthor(book.author)})
 //     newBook.save()
 //   })
 // }
@@ -155,23 +158,23 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
-    authorCount: () => authors.length,
-    allBooks: (root, args) => {
-      if (JSON.stringify(args) === '{}'){return Book.find({})} //args not provided (deafult)
+    authorCount: () => Author.collection.countDocuments(),
+    allBooks: async (root, args) => {
+      if (JSON.stringify(args) === '{}'){return Book.find({})} //args not provided (default)
       let newArr = Book.find({})
       if (args.author !== undefined && args.genre !== undefined) {
-        newArr = books.filter(book => book.author === args.author)
+        newArr = newArr.filter(book => book.author.name === args.author)
         newArr = newArr.filter(book => book.genres.includes(args.genre))
         return newArr
       }
       if (args.author !== undefined) {
-        newArr = books.filter(book => book.author === args.author)
+        newArr = newArr.filter(book => book.author.name === args.author)
         return newArr
       }
-      newArr = books.filter(book => book.genres.includes(args.genre))
+      newArr = newArr.filter(book => book.genres.includes(args.genre))
       return newArr
     },
-    allAuthors: () => Author.find({})
+    allAuthors: async () => await Author.find({})
   },
   Mutation: {
     addBook: (root, args) => {
@@ -199,10 +202,11 @@ const resolvers = {
     }
   },
   Author: {
-    bookCount: (root) => {
-      let newArr = []
-      newArr = books.filter(book => book.author === root.name)
-      return newArr.length
+    bookCount: async (root, args) => {
+
+      //Fixed the problem with unmatching author IDs in the DB.
+      //Now I just need to implement counter correctly.
+
     }
   }
 }
