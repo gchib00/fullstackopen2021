@@ -132,7 +132,6 @@ const typeDefs = gql`
   type Author {
     name: String!
     bookCount: Int!
-    id: String!
     born: Int
   },
   type Mutation {
@@ -161,7 +160,7 @@ const resolvers = {
     authorCount: () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
       if (JSON.stringify(args) === '{}'){return Book.find({})} //args not provided (default)
-      let newArr = Book.find({})
+      let newArr = await Book.find({})
       if (args.author !== undefined && args.genre !== undefined) {
         newArr = newArr.filter(book => book.author.name === args.author)
         newArr = newArr.filter(book => book.genres.includes(args.genre))
@@ -177,18 +176,24 @@ const resolvers = {
     allAuthors: async () => await Author.find({})
   },
   Mutation: {
-    addBook: (root, args) => {
-      let id = uuidv4()
-      const newBook = {...args, id}
-      books.push(newBook)
-      //check if author exists and add it if necessary
-      if (!authors.some(author => author.name == args.author)){
-        const newAuthor = {
-          name: args.author,
-          bookCount: 1
-        }
-        authors.push(newAuthor)
+    addBook: async (root, args) => {
+      const book = await Book.find({title: args.title})
+      if(book.length > 0){
+        console.error('Book by this name already exists!')
+        return null
       }
+      const assignAuthor = async (authorName) => {
+        let author = await Author.find({name: authorName})
+        if (author.length > 0){
+          return author[0]._id
+        } //if existing author is not found, create a new one:
+        const newAuthor = new Author({name: authorName})
+        await newAuthor.save()
+        author = await Author.find({name: authorName})
+        return author
+      }
+      const newBook = new Book({...args, author: await assignAuthor(args.author)})
+      newBook.save()
       return newBook
     },
     editAuthor: (root, args) => {
@@ -203,10 +208,10 @@ const resolvers = {
   },
   Author: {
     bookCount: async (root, args) => {
-
-      //Fixed the problem with unmatching author IDs in the DB.
-      //Now I just need to implement counter correctly.
-
+      const author = await Author.findById(root.id)
+      const books = await Book.find({})
+      const newArr = books.filter(book => book.author.toString() == root.id)
+      return newArr.length
     }
   }
 }
