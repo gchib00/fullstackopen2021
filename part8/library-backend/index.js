@@ -196,14 +196,13 @@ const resolvers = {
       newBook.save()
       return newBook
     },
-    editAuthor: (root, args) => {
-      let updatedAuthor = authors.find(author => author.name === args.name)
-      if (updatedAuthor == undefined){
+    editAuthor: async (root, args) => {
+      const author = await Author.findOneAndUpdate({name: args.name}, {born: args.setBornTo})
+      if (author == null){
+        console.error(args.name,"doesn't exist")
         return null
       }
-      updatedAuthor = {...updatedAuthor, born: args.setBornTo}
-      authors = authors.map(author => author.name == updatedAuthor.name ? updatedAuthor : author)
-      return updatedAuthor
+      return await Author.findOne({name: args.name})
     }
   },
   Author: {
