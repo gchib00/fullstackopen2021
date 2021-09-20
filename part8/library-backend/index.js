@@ -180,8 +180,8 @@ const resolvers = {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
-      if (JSON.stringify(args) === '{}'){return Book.find({})} //args not provided (default)
-      let newArr = await Book.find({})
+      if (JSON.stringify(args) === '{}'){return Book.find({}).populate('author')} //args not provided (default)
+      let newArr = await Book.find({}).populate('author')
       if (args.author !== undefined && args.genre !== undefined) {
         newArr = newArr.filter(book => book.author.name === args.author)
         newArr = newArr.filter(book => book.genres.includes(args.genre))
