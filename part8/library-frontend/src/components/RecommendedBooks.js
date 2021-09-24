@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { useQuery } from '@apollo/client'
+import { useLazyQuery } from '@apollo/client'
 import { BOOKS_BY_GENRE } from '../queries'
 
 const RecommendedBooks = ({show, loggedUser}) => {
@@ -13,8 +13,23 @@ const RecommendedBooks = ({show, loggedUser}) => {
     }
   }, [loggedUser])
 
-  const response = useQuery(BOOKS_BY_GENRE, {variables: {selectedGenre: selectedGenre}})
-  
+  // const response = useQuery(BOOKS_BY_GENRE, {variables: {selectedGenre: selectedGenre}})
+
+
+  const [getRecommendedList, response] = useLazyQuery(BOOKS_BY_GENRE)
+  const showRecommendations = () => {
+    getRecommendedList({variables: {selectedGenre: selectedGenre}})
+  }
+  useEffect(() => {
+    showRecommendations()
+  }, [show])
+
+  let recommendedList = []
+  try {
+    recommendedList = response.data.allBooks
+  } catch {}
+
+
   if (!show){return null}
   return (
     <div>
@@ -27,7 +42,7 @@ const RecommendedBooks = ({show, loggedUser}) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {response.data.allBooks.map(book => 
+          {recommendedList.map(book => 
             <tr key={book.title}>
               <td>{book.title}</td>
               <td>{book.author.name}</td>
