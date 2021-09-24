@@ -32,7 +32,6 @@ const Login = ({setToken, show}) => {
     event.preventDefault()
     await login({ variables: { username: username, password: password } })
   }
-  // console.log('response =', response.data)
 
   return(
     <>

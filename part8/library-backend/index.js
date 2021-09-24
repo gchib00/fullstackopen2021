@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const mongoose = require('mongoose')
 const Book = require('./models/book')
 const Author = require('./models/author');
-const User = require('./models/users')
+const User = require('./models/user')
 const jwt = require('jsonwebtoken')
 
 const JWT_SECRET = 'FAKE_SECRET_KEY'
@@ -43,7 +43,7 @@ const typeDefs = gql`
     ): Author
     createUser(
       username: String!
-      favoriteGenre: String!
+      favoriteGenre: String
     ): User
     login(
       username: String!
@@ -52,7 +52,7 @@ const typeDefs = gql`
   },
   type User {
     username: String!
-    favoriteGenre: String!
+    favoriteGenre: String
     id: ID!
   },
   type Token {
@@ -125,7 +125,7 @@ const resolvers = {
       return await Author.findOne({name: args.name})
     },
     createUser: (root, args) => {
-      const user = new User({ username: args.username })
+      const user = new User({ username: args.username, favoriteGenre: args.favoriteGenre })
       return user.save()
         .catch(error => {
           throw new UserInputError(error.message, {
@@ -136,7 +136,7 @@ const resolvers = {
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
   
-      if ( !user || args.password !== 'fakepassword' ) {
+      if ( !user || args.password !== 'fakepass' ) {
         throw new UserInputError("wrong credentials")
       }
       const userForToken = {

@@ -6,7 +6,7 @@ const Books = (props) => {
   const [filteredBooks, setFilteredBooks] = useState([])
 
   const response = useQuery(ALL_BOOKS)
-  // if(response.loading){return null}
+
   if (!props.show || response.loading) {
     return null
   }
@@ -14,23 +14,22 @@ const Books = (props) => {
   let genres = []
   allBooks.map(book => book.genres.map(genre => { //populate array with genres
     if (genres.includes(genre)) {return null} //avoids duplicated items
-    genres.push(genre)
+    return genres.push(genre)
   }))
 
   const filterByGenre = (genre) => {
     const arr = []
+    // eslint-disable-next-line
     allBooks.map(book => {
       if (book.genres.includes(genre)){
-        console.log(arr)
-        // setFilteredBooks(filteredBooks.concat(book))
         arr.push(book)
       }
     })
     setFilteredBooks(arr)
   }
-
+  // eslint-disable-next-line
   const books = (filteredBooks == 0) ? allBooks : filteredBooks
-  console.log(books)
+
   return (
     <div>
       <h1>books</h1>
