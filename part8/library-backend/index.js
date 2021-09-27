@@ -91,7 +91,9 @@ const resolvers = {
       newArr = newArr.filter(book => book.genres.includes(args.genre))
       return newArr
     },
-    allAuthors: async () => await Author.find({}),
+    allAuthors: async () => {
+      return await Author.find({}) 
+    },
     me: (root, args, context) => {
       return context.currentUser
     }
@@ -160,10 +162,7 @@ const resolvers = {
   },
   Author: {
     bookCount: async (root, args) => {
-      const author = await Author.findById(root.id)
-      const books = await Book.find({})
-      const newArr = books.filter(book => book.author.toString() == root.id)
-      return newArr.length
+      return Book.countDocuments({ author: root })
     }
   }
 }
