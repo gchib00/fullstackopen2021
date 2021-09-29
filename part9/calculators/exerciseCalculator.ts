@@ -8,6 +8,14 @@ interface Result {
   comment: string;
 }
 
+const target = Number(process.argv[2])
+const trainingInfo: Array<number> = []
+//populate trainingInfo with daily hours:
+if (process.argv.length > 2)
+for (let i=3; i<process.argv.length; i++){
+  trainingInfo.push(Number(process.argv[i]))
+}
+
 const calculateExercises = (trainingInfo: Array<number>, target: number): Result => {
   const trainingDays = trainingInfo.filter(day => day !== 0).length
   const actualScore = ( trainingInfo.reduce((a, b) => a + b, 0) / trainingInfo.length) //arr average divided by length of the arr
@@ -51,4 +59,5 @@ const calculateExercises = (trainingInfo: Array<number>, target: number): Result
   }
   return data
 }
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 1))
+// console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 1))
+console.log(calculateExercises(trainingInfo, target))
