@@ -1,5 +1,5 @@
-const height: number = Number(process.argv[2])
-const weight: number = Number(process.argv[3])
+// const height: number = Number(process.argv[2])
+// const weight: number = Number(process.argv[3])
 
 const calculateBmi = (height: number, weight: number) => {
   height = height / 100 //convert into meters
@@ -19,4 +19,5 @@ const calculateBmi = (height: number, weight: number) => {
   }
 }
 // calculateBmi(height, weight)
-console.log(calculateBmi(180, 74))
+// console.log(calculateBmi(180, 74))
+export default calculateBmi

@@ -8,13 +8,16 @@ interface Result {
   comment: string;
 }
 
-const target = Number(process.argv[2])
-const trainingInfo: Array<number> = []
+// const target = Number(process.argv[2])
+// const trainingInfo: Array<number> = []
+
 //populate trainingInfo with daily hours:
-if (process.argv.length > 2)
-for (let i=3; i<process.argv.length; i++){
-  trainingInfo.push(Number(process.argv[i]))
-}
+
+// if (process.argv.length > 2){
+//   for (let i=3; i<process.argv.length; i++){
+//     trainingInfo.push(Number(process.argv[i]))
+//   }
+// }
 
 const calculateExercises = (trainingInfo: Array<number>, target: number): Result => {
   const trainingDays = trainingInfo.filter(day => day !== 0).length
@@ -34,6 +37,7 @@ const calculateExercises = (trainingInfo: Array<number>, target: number): Result
     case(actualScore>target): 
       rating=3
       break
+    default: throw new Error('Something went wrong...')
   }
   //determine comment:
   switch(rating){
@@ -46,6 +50,7 @@ const calculateExercises = (trainingInfo: Array<number>, target: number): Result
     case(3): 
       comment = 'Great'
       break
+    default: throw new Error('Something went wrong...')
   }
 
   const data = {
@@ -60,4 +65,6 @@ const calculateExercises = (trainingInfo: Array<number>, target: number): Result
   return data
 }
 // console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 1))
-console.log(calculateExercises(trainingInfo, target))
+// console.log(calculateExercises(trainingInfo, target))
+
+export default calculateExercises
