@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import express from 'express';
 const app = express();  
 import calculateBmi from './bmiCalculator';
+import calculateExercises from './exerciseCalculator';
+
+app.use(express.json());
 
 app.get('/hello', (_req, res) => {
   res.send('Hello Full Stack!');
@@ -21,6 +25,10 @@ app.get('/bmi', (req, res) => {
     weight: weight,
     bmi: bmiResult
   });
+});
+app.post('/exercises', (req, res) => {
+  const {daily_exercises, target} = req.body;
+  res.send(calculateExercises(daily_exercises, target));
 });
 
 const PORT = 3003;

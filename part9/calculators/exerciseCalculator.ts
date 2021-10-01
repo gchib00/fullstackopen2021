@@ -9,6 +9,14 @@ interface Result {
 }
 
 const calculateExercises = (trainingInfo: Array<number>, target: number): Result => {
+  target = Number(target); //because target input might be a string type but number 
+  if(trainingInfo === undefined || target === undefined) {
+    throw new Error('parameters are missing...');
+  }
+  if(trainingInfo.some(isNaN) || isNaN(target)){
+    throw new Error('malformatted parameters...');
+  }
+
   const trainingDays = trainingInfo.filter(day => day !== 0).length;
   const actualScore = ( trainingInfo.reduce((a, b) => a + b, 0) / trainingInfo.length); //arr average divided by length of the arr
   const isSuccess = actualScore >= target;
