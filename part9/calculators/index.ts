@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 import express from 'express';
 const app = express();  
 import calculateBmi from './bmiCalculator';
@@ -27,6 +27,7 @@ app.get('/bmi', (req, res) => {
   });
 });
 app.post('/exercises', (req, res) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const {daily_exercises, target} = req.body;
   res.send(calculateExercises(daily_exercises, target));
 });
