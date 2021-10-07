@@ -1,16 +1,14 @@
 import React from 'react';
 import {CourseParts} from '../types';
+import Part from './Part';
 
 const Content = ({courseParts}: CourseParts) => {
-  courseParts.map(course => {
-    console.log(course.name, course.exerciseCount)
-  })
   return(
-    <ul>
+    <div>
       {courseParts.map(course => {
-        return <li key={course.name}>{course.name} {course.exerciseCount}</li>
+        return <Part key={course.name} course={course}/>
       })}
-    </ul>
+    </div>
   )
 }
 

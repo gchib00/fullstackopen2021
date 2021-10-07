@@ -1,5 +1,5 @@
 export interface CourseParts {
-  courseParts: Array<CoursePartBase>
+  courseParts: Array<CoursePart>
 }
 
 export interface CoursePartBase {
@@ -21,5 +21,9 @@ export interface CourseSubmissionPart extends CoursePartBase {
   type: "submission";
   exerciseSubmissionLink: string;
 }
+export interface CourseRequirementsPart extends CoursePartBase {
+  type: "special";
+  requirements: string[]
+}
 
-export type CoursePart = CourseNormalPart | CourseProjectPart | CourseSubmissionPart;
+export type CoursePart = CourseNormalPart | CourseProjectPart | CourseSubmissionPart | CourseRequirementsPart;
