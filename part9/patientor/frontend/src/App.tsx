@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { Button, Divider, Header, Container } from "semantic-ui-react";
+import { setPatientList } from "./state";
 
 import { apiBaseUrl } from "./constants";
 import { useStateValue } from "./state";
@@ -9,6 +10,7 @@ import { Patient } from "./types";
 
 import PatientListPage from "./PatientListPage";
 import PatientViewPage from "./PatientViewPage"
+
 
 const App = () => {
   const [, dispatch] = useStateValue();
@@ -21,7 +23,7 @@ const App = () => {
         const { data: patientListFromApi } = await axios.get<Patient[]>(
           `${apiBaseUrl}/api/patients`
         );
-        dispatch({ type: "SET_PATIENT_LIST", payload: patientListFromApi });
+        dispatch(setPatientList(patientListFromApi));
       } catch (e) {
         console.error('Couldn\'t fetch patients', e);
       }
