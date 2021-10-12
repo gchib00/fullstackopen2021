@@ -17,4 +17,14 @@ export interface Patient {
   gender: Gender;
   ssn?: string;
   dateOfBirth?: string;
+  entries: Array<BaseEntry>;
+}
+
+export interface BaseEntry {
+  id: string;
+  description: string;
+  date: string;
+  type: string;
+  specialist: string;
+  diagnosisCodes?: string[];
 }

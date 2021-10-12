@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Patient } from "../types";
+import { Patient, BaseEntry } from "../types";
 import { useParams } from "react-router";
 import { apiBaseUrl } from "../constants";
 import axios from "axios";
@@ -23,18 +23,41 @@ const PatientListPage = () => {
   }
 
   const getGenderIcon = () => {
-    console.log('called')
     if(patient.gender === 'female'){
       return 'venus';
     } else {
       return 'mars';
     }
   }
+  const entriesArr: BaseEntry[] = patient.entries;
+  console.log(entriesArr)
   return(
     <div>
       <h2>{patient.name} <Icon name={getGenderIcon()}/></h2>
       <p><strong>SSN:</strong> {patient.ssn}</p>
       <p><strong>Occupation:</strong> {patient.occupation}</p>
+      <br />
+      <h3>Entries:</h3>
+        {entriesArr.map(entry => {
+          if(entry.diagnosisCodes === undefined){
+            return(
+              <p>{entry.description}</p>
+            )
+          }
+          return(
+            <div>
+              <p>{entry.description}</p>
+              <ul>
+                {entry.diagnosisCodes.map(code => {
+                  return(
+                    <li>{code}</li>
+                  )
+                })}
+              </ul>
+            </div>
+          )
+        })}
+        {/* <p>{entriesArr.}</p> */}
     </div>
   )
 };
