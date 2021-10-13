@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Patient, BaseEntry, Diagnosis } from "../types";
 import { useParams } from "react-router";
 import { apiBaseUrl } from "../constants";
+import Entries from '../components/Entries';
 import axios from "axios";
 import { Icon } from 'semantic-ui-react';
 
@@ -35,15 +36,8 @@ const PatientListPage = () => {
       return 'mars';
     }
   }
-  const determineDiagnoses =  (code: string) => {
-    const response: Diagnosis | undefined = diagnosesArr.find(diagnosis => diagnosis.code == code);
-    if (!response){return null}
-    return response.name;
-  }
 
   const entriesArr: BaseEntry[] = patient.entries;
-
-  console.log(diagnosesArr);
 
   return(
     <div>
@@ -51,26 +45,7 @@ const PatientListPage = () => {
       <p><strong>SSN:</strong> {patient.ssn}</p>
       <p><strong>Occupation:</strong> {patient.occupation}</p>
       <br />
-      <h3>Entries:</h3>
-      {entriesArr.map(entry => {
-            if(!entry.diagnosisCodes){
-              return(<p>{entry.description}</p>)
-            }
-            return(
-              <div>
-                <p>{entry.description}</p>
-                <ul>
-                  {
-                    entry.diagnosisCodes.map(code => {
-                      const test = determineDiagnoses(code);
-                      if(typeof test === 'string'){return(<li key={code}>{code} - {test}</li>)}
-                      return(<li key={code}>{code}</li>)
-                    })
-                  }
-                </ul>
-              </div>
-            )
-        })}
+      <Entries entries={entriesArr} diagnoses={diagnosesArr} />
     </div>
   )
 };
