@@ -1,0 +1,11 @@
+POST http://localhost:3002/api/patients/d2773c6e-f723-11e9-8f0b-362b9e155667/entries
+content-type: application/json
+
+{
+  "type": "HealthCheck",
+  "date": "1001-01-01",
+  "description": "I am really hoping that this will work",
+  "specialist": "Giorgi",
+  # "diagnosisCodes": parseDiagnosisCodes(bodyObject.diagnosisCodes),
+  "healthCheckRating": 3
+}
