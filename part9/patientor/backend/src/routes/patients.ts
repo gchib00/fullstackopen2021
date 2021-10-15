@@ -1,6 +1,6 @@
 import express from 'express';
-import  patientsService from '../services/patientsService';
-import { toNewPatientEntry, toNewEntry } from '../utils'; 
+import patientsService from '../services/patientsService';
+import { toNewPatientEntry, toNewHealthCheckEntry, toNewOccupationalHealthcareEntry, toNewHospitalEntry } from '../utils'; 
 
 const router = express.Router();
 
@@ -24,17 +24,46 @@ router.get('/:id', (req, res) => {
   res.json(patient);
 });
 router.post('/:id/entries', (req, res ) => {
-  // const patientID = req.params.id; 
-  const typedBody = toNewEntry(req.body);
-  const newEntry = patientsService.addHospitalEntry(
-    req.params.id,
-    typedBody.date,
-    typedBody.description,
-    typedBody.specialist,
-    typedBody.diagnosisCodes,
-    typedBody.healthCheckRating
-  );
-  res.json(newEntry);
+  switch(req.body.type) {
+    case("HealthCheck"): {
+      const typedBody = toNewHealthCheckEntry(req.body);
+      const newEntry = patientsService.addHealthCheckEntry(
+        req.params.id,
+        typedBody.date,
+        typedBody.description,
+        typedBody.specialist,
+        typedBody.diagnosisCodes,
+        typedBody.healthCheckRating
+      );
+      return res.json(newEntry);
+    }
+    case("OccupationalHealthcare"): {
+      const typedBody = toNewOccupationalHealthcareEntry(req.body);
+      const newEntry = patientsService.addOccupationalHealthcareEntry(
+        req.params.id,
+        typedBody.date,
+        typedBody.description,
+        typedBody.specialist,
+        typedBody.diagnosisCodes,
+        typedBody.sickLeave,
+        typedBody.employerName,
+      );
+      return res.json(newEntry);
+    }
+    case("Hospital"): {
+      const typedBody = toNewHospitalEntry(req.body);
+      const newEntry = patientsService.addHospitalEntry(
+        req.params.id,
+        typedBody.date,
+        typedBody.description,
+        typedBody.specialist,
+        typedBody.diagnosisCodes,
+        typedBody.discharge
+      );
+      return res.json(newEntry);
+    }
+    default: throw new Error('Type of your request does not match any of the existing entry types!');
+  }
 });
 
 export default router;

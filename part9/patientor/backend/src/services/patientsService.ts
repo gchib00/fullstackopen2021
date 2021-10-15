@@ -1,5 +1,5 @@
 import patientsData from '../data/patients';
-import { PatientEntry, Gender } from '../types';
+import { PatientEntry, Gender, SickLeave, Discharge } from '../types';
 import { uuid } from 'uuidv4';
 
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -25,14 +25,14 @@ const addPatient = (name: string, dateOfBirth: string, gender: Gender, occupatio
   entries.push(newPatient);
   return entries;
 };
-const addHospitalEntry = (
+const addHealthCheckEntry = (
   userID: string, 
   date: string, 
   description: string,
   specialist: string, 
   diagnosisCodes: string[] | undefined, 
-  healthCheckRating: number): Array<PatientEntry> => {
-
+  healthCheckRating: number): Array<PatientEntry> => 
+  {
   const id = uuid();
   const newEntry = {
     type: 'HealthCheck',
@@ -50,14 +50,62 @@ const addHospitalEntry = (
     }
     return patient;
   });
-  
-  
-  // const newEntriesArr = entries.map(patient => {
-  //   if(patient.id === userID){
-  //     patient.entries.push(newEntry);
-  //   }
-  //   return patient;
-  // });
+  return newEntriesArr;
+};
+const addOccupationalHealthcareEntry = (
+  userID: string, 
+  date: string, 
+  description: string,
+  specialist: string, 
+  diagnosisCodes: string[] | undefined,
+  sickLeave: SickLeave | undefined,
+  employerName: string): Array<PatientEntry> => 
+  {
+  const id = uuid();
+  const newEntry = {
+    type: 'OccupationalHealthcare',
+    date: date,
+    description: description,
+    specialist: specialist,
+    diagnosisCodes: diagnosisCodes,
+    id: id, 
+    employerName: employerName,
+    sickLeave: sickLeave
+  };
+  const newEntriesArr = entries.map(patient => {
+    if(patient.id == userID) {
+      patient.entries.push(newEntry);
+      return patient;
+    }
+    return patient;
+  });
+  return newEntriesArr;
+};
+const addHospitalEntry = (
+  userID: string, 
+  date: string, 
+  description: string,
+  specialist: string, 
+  diagnosisCodes: string[] | undefined,
+  discharge: Discharge): Array<PatientEntry> => 
+  {
+  const id = uuid();
+  const newEntry = {
+    type: 'Hospital',
+    date: date,
+    description: description,
+    specialist: specialist,
+    diagnosisCodes: diagnosisCodes,
+    id: id, 
+    discharge: discharge
+  };
+  const newEntriesArr = entries.map(patient => {
+    if(patient.id == userID) {
+      patient.entries.push(newEntry);
+      return patient;
+    }
+    return patient;
+  });
   return newEntriesArr;
 };
 const getPatient = (id: string): PatientEntry | undefined => {
@@ -68,4 +116,4 @@ const getPatient = (id: string): PatientEntry | undefined => {
   return undefined;
 };
 
-export default { getEntires, getSecuredEntries, addPatient, getPatient, addHospitalEntry };
+export default { getEntires, getSecuredEntries, addPatient, getPatient, addHealthCheckEntry, addOccupationalHealthcareEntry, addHospitalEntry };

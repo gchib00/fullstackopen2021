@@ -52,10 +52,29 @@ export interface OccupationalHealthCareEntry extends BaseEntry {
   };
 }
 
-export interface HospitalEntry extends BaseEntry {
+export interface HealthCheckEntry extends BaseEntry {
   type: 'HealthCheck';
   healthCheckRating: HealthCheckRating,
 }
-export type NewHospitalEntry = Omit<HospitalEntry, 'id'>;
+
+export interface HospitalEntry extends BaseEntry {
+  type: 'Hospital';
+  discharge: {
+    date: string;
+    criteria: string
+  }
+}
+
+export type NewHealthCheckEntry = Omit<HealthCheckEntry, 'id'>;
 export type NewOccupationalHealthCareEntry = Omit<OccupationalHealthCareEntry, 'id'>; 
-export type AcceptableEntryType = NewHospitalEntry | NewOccupationalHealthCareEntry;
+export type NewHospitalEntry = Omit<HospitalEntry, 'id'>;
+export type AcceptableEntryType = NewHealthCheckEntry | NewOccupationalHealthCareEntry | NewHospitalEntry;
+
+export interface SickLeave {
+  startDate: string;
+  endDate: string
+} 
+export interface Discharge {
+  date: string,
+  criteria: string
+} 
