@@ -1,14 +1,14 @@
 POST http://localhost:3002/api/patients/d2773c6e-f723-11e9-8f0b-362b9e155667/entries
 content-type: application/json
 
-# {
-#   "type": "HealthCheck",
-#   "date": "1001-01-01",
-#   "description": "I am really hoping that this will work",
-#   "specialist": "Giorgi",
-#   "healthCheckRating": 2,
-#   "diagnosisCodes": ["123ABC", "456DEF"]
-# }
+{
+  "type": "HealthCheck",
+  "date": "1001-01-01",
+  "description": "I am really hoping that this will work",
+  "specialist": "Giorgi",
+  "healthCheckRating": 2,
+  "diagnosisCodes": ["123ABC", "456DEF"]
+}
 # {
 #   "type": "Hospital",
 #   "date": "1001-01-01",
@@ -19,16 +19,16 @@ content-type: application/json
 #     "criteria": "2131-66-12"
 #   }
 # }
-{
-  "type": "OccupationalHealthcare",
-  "date": "1001-01-01",
-  "description": "I am really hoping that this will work",
-  "specialist": "Giorgi",
-  "employerName": "Me",
-  "sickLeave": {
-    "startDate": "2020",
-    "endDate": "2021"
-  }
-}
+# {
+#   "type": "OccupationalHealthcare",
+#   "date": "1001-01-01",
+#   "description": "I am really hoping that this will work",
+#   "specialist": "Giorgi",
+#   "employerName": "Me",
+#   "sickLeave": {
+#     "startDate": "2020",
+#     "endDate": "2021"
+#   }
+# }
 
   # "diagnosisCodes": parseDiagnosisCodes(bodyObject.diagnosisCodes),

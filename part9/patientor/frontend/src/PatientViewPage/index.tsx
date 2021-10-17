@@ -1,15 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { Patient, BaseEntry, Diagnosis } from "../types";
+import { Patient, BaseEntry, Diagnosis, HealthCheckEntry } from "../types";
 import { useParams } from "react-router";
 import { apiBaseUrl } from "../constants";
 import Entries from '../components/Entries';
+import AddPatientModal from '../AddNewEntryModal'
 import axios from "axios";
-import { Icon } from 'semantic-ui-react';
+import { Icon, Button } from 'semantic-ui-react';
 
 const PatientListPage = () => {
   const [patient, setPatient] = useState<Patient>();
   const [diagnosesArr, setDiagnosesArr] = useState<Diagnosis[]>([]);
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const { id } = useParams<{id: string}>();
+
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+  };
+
+  const submitNewEntry = async (values: Omit<HealthCheckEntry, 'id'>) => {
+    values = {...values, type: 'HealthCheck'};
+    console.log('values that Im trying to post:', values)
+    try {
+      const { data } = await axios.post<HealthCheckEntry>(
+        `${apiBaseUrl}/api/patients/${id}/entries`,
+        values
+      );
+      closeModal();
+    } catch (err) {    
+      //@ts-ignore  
+      console.error(err.response?.data || 'Unknown Error');      
+    }
+  };
 
   const fetchFullPatient = async () => {
     const response = await axios.get<Patient>( `${apiBaseUrl}/api/patients/${id}`);
@@ -46,6 +69,12 @@ const PatientListPage = () => {
       <p><strong>Occupation:</strong> {patient.occupation}</p>
       <br />
       <Entries entries={entriesArr} diagnoses={diagnosesArr} />
+      <AddPatientModal 
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        onClose={closeModal}
+      />
+      <Button onClick={() => openModal()}>Add a new entry</Button>
     </div>
   )
 };
