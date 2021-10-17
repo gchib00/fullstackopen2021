@@ -29,23 +29,23 @@ export const AddNewEntryForm = ({ onSubmit, onCancel } : Props ) => {
         healthCheckRating: 0
       }}
       onSubmit={onSubmit}
-      // validate={values => {
-      //   const requiredError = "Field is required";
-      //   const errors: { [field: string]: string } = {};
-      //   if (!values.description) {
-      //     errors.name = requiredError;
-      //   }
-      //   if (!values.date) {
-      //     errors.ssn = requiredError;
-      //   }
-      //   if (!values.specialist) {
-      //     errors.dateOfBirth = requiredError;
-      //   }
-      //   if (!values.healthCheckRating) {
-      //     errors.occupation = requiredError;
-      //   }
-      //   return errors;
-      // }}
+      validate={values => {
+        const requiredError = "Field is required";
+        const errors: { [field: string]: string } = {};
+        if (!values.description) {
+          errors.description = requiredError;
+        }
+        if (!values.date) {
+          errors.date = requiredError;
+        }
+        if (!values.specialist) {
+          errors.specialist = requiredError;
+        }
+        if (!values.healthCheckRating) {
+          errors.healthCheckRating = requiredError;
+        }
+        return errors;
+      }}
     >
       {({ isValid, dirty }) => {
         return (

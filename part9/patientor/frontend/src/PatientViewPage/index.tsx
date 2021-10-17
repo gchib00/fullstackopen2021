@@ -21,7 +21,6 @@ const PatientListPage = () => {
 
   const submitNewEntry = async (values: Omit<HealthCheckEntry, 'id'>) => {
     values = {...values, type: 'HealthCheck'};
-    console.log('values that Im trying to post:', values)
     try {
       const { data } = await axios.post<HealthCheckEntry>(
         `${apiBaseUrl}/api/patients/${id}/entries`,
