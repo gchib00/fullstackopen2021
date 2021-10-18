@@ -35,7 +35,6 @@ export const AddNewEntryForm = ({ onSubmit, onCancel, type } : Props ) => {
           }}
           onSubmit={onSubmit}
           validate={values => {
-            console.log('values inside healthcheck = ', values)
             const requiredError = "Field is required";
             const errors: { [field: string]: string } = {};
             if (!values.description) {
@@ -122,7 +121,6 @@ export const AddNewEntryForm = ({ onSubmit, onCancel, type } : Props ) => {
           }}
           onSubmit={onSubmit}
           validate={values => {
-            console.log('values inside hopsital = ', values)
             const requiredError = "Field is required";
             const errors: { [field: string]: string } = {};
             if (!values.description) {
@@ -213,7 +211,6 @@ export const AddNewEntryForm = ({ onSubmit, onCancel, type } : Props ) => {
           }}
           onSubmit={onSubmit}
           validate={values => {
-            console.log('values inside occupationalHealthcare = ', values)
             const requiredError = "Field is required";
             const errors: { [field: string]: string } = {};
             if (!values.description) {
