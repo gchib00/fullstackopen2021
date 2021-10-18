@@ -33,14 +33,14 @@ export interface HealthCheckEntry extends BaseEntry {
   type: 'HealthCheck';
   healthCheckRating: HealthCheckRating,
 }
-// export interface OccupationalHealthCareEntry extends BaseEntry {
-//   type: 'OccupationalHealthcare';
-//   employerName: string;
-//   sickLeave?: {
-//     startDate: string;
-//     endDate: string;
-//   };
-// }
+export interface OccupationalHealthCareEntry extends BaseEntry {
+  type: 'OccupationalHealthcare';
+  employerName: string;
+  sickLeave?: {
+    startDate: string;
+    endDate: string;
+  };
+}
 export interface HospitalEntry extends BaseEntry {
   type: 'Hospital';
   discharge: {
@@ -48,6 +48,8 @@ export interface HospitalEntry extends BaseEntry {
     criteria: string
   }
 }
+
+export type AcceptableEntries = Omit<OccupationalHealthCareEntry, 'id'> | Omit<HealthCheckEntry, 'id'> | Omit<HospitalEntry, 'id'>
 
 export enum HealthCheckRating {
   Healthy = 0,

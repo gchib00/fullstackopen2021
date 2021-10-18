@@ -3,10 +3,10 @@ import { Grid, Button, Select } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 
 import { TextField, SelectField, HealthCheckRatingOptions,NumberField } from "./FormField";
-import { HealthCheckEntry, HealthCheckRating, HospitalEntry } from "../types";
+import { AcceptableEntries } from "../types";
 
 interface Props {
-  onSubmit: (values: Omit<HealthCheckEntry, 'id'> | Omit<HospitalEntry, 'id'>) => void;
+  onSubmit: (values: AcceptableEntries) => void;
   onCancel: () => void;
   type: string
 }
@@ -19,8 +19,6 @@ const healthCheckRatingOptions: HealthCheckRatingOptions[] = [
 ];
 
 export const AddNewEntryForm = ({ onSubmit, onCancel, type } : Props ) => {
-
-  console.log('type=', type)
 
   switch(type){
     case('HealthCheck'): {
@@ -172,6 +170,103 @@ export const AddNewEntryForm = ({ onSubmit, onCancel, type } : Props ) => {
                   label="dischargeDate"
                   placeholder="Discharge date"
                   name="discharge.date"
+                  component={TextField}
+                />
+                <Grid>
+                  <Grid.Column floated="left" width={5}>
+                    <Button type="button" onClick={onCancel} color="red">
+                      Cancel
+                    </Button>
+                  </Grid.Column>
+                  <Grid.Column floated="right" width={5}>
+                    <Button
+                      type="submit"
+                      floated="right"
+                      color="green"
+                      disabled={!dirty || !isValid}
+                    >
+                      Add
+                    </Button>
+                  </Grid.Column>
+                </Grid>
+              </Form>
+            );
+          }}
+        </Formik>
+      );
+    }
+    case('OccupationalHealthcare'): {
+      return (
+        <Formik
+          enableReinitialize
+          initialValues={{
+            type: type,
+            description: '',
+            date: '',
+            specialist: '',
+            diagnosisCodes: [],
+            employerName: '',
+            sickLeave: {
+              startDate: '',
+              endDate: ''
+            }
+          }}
+          onSubmit={onSubmit}
+          validate={values => {
+            console.log('values inside occupationalHealthcare = ', values)
+            const requiredError = "Field is required";
+            const errors: { [field: string]: string } = {};
+            if (!values.description) {
+              errors.description = requiredError;
+            }
+            if (!values.date) {
+              errors.date = requiredError;
+            }
+            if (!values.specialist) {
+              errors.specialist = requiredError;
+            }
+            if (!values.employerName)
+              errors.employerName = requiredError;
+          }}
+        >
+          {({ isValid, dirty }) => {
+            return (
+              <Form className="form ui">
+                <Field
+                  label="Description"
+                  placeholder="Description"
+                  name="description"
+                  component={TextField}
+                />
+                <Field
+                  label="Date"
+                  placeholder="YYYY-MM-DD"
+                  name="date"
+                  component={TextField}
+                />
+                <Field
+                  label="Specialist"
+                  placeholder="Specialist"
+                  name="specialist"
+                  component={TextField}
+                />
+                <Field
+                  label="Employer name"
+                  placeholder="Employer name"
+                  name="employerName"
+                  component={TextField}
+                />
+                <p>Sick leave:</p>
+                <Field
+                  label="Start date"
+                  placeholder="Start date"
+                  name="sickLeave.startDate"
+                  component={TextField}
+                />
+                <Field
+                  label="End date"
+                  placeholder="End date"
+                  name="sickLeave.endDate"
                   component={TextField}
                 />
                 <Grid>

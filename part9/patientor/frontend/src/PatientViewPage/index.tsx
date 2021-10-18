@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Patient, BaseEntry, Diagnosis, HealthCheckEntry, HospitalEntry } from "../types";
+import { Patient, BaseEntry, Diagnosis, AcceptableEntries } from "../types";
 import { useParams } from "react-router";
 import { apiBaseUrl } from "../constants";
 import Entries from '../components/Entries';
@@ -19,10 +19,10 @@ const PatientListPage = () => {
     setModalOpen(false);
   };
 
-  const submitNewEntry = async (values: Omit<HealthCheckEntry, 'id'> | Omit<HospitalEntry, 'id'>) => {
+  const submitNewEntry = async (values: AcceptableEntries) => {
     values = {...values};
     try {
-      const { data } = await axios.post<HealthCheckEntry>(
+      const { data } = await axios.post(
         `${apiBaseUrl}/api/patients/${id}/entries`,
         values
       );

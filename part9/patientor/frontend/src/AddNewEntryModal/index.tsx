@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { Modal, Segment, Select } from 'semantic-ui-react';
 import AddNewEntryForm from './AddNewEntryForm';
-import { HealthCheckEntry, HospitalEntry } from '../types'
+import { AcceptableEntries } from '../types'
 
 interface Props {
   modalOpen: boolean;
   onClose: () => void;
-  onSubmit: (values: Omit<HealthCheckEntry, 'id'> | Omit<HospitalEntry, 'id'>) => void;
+  onSubmit: (values: AcceptableEntries) => void;
   error?: string;
 }
 
 const typeOptions = [
   {value: 'HealthCheck', text: 'Health check'},
-  {value: 'Hospital', text: 'Hospital check'}
+  {value: 'Hospital', text: 'Hospital check'},
+  {value: 'OccupationalHealthcare', text: 'Occupational check'}
 ]
 
 const AddPatientModal = ({ modalOpen, onClose, onSubmit, error }: Props) => {
